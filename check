@@ -1,0 +1,39 @@
+
+# 查询所有⽤户数据
+user_list=Wdtest.query.all()
+​
+# 查询有多少个⽤户
+user_list_num=Wdtest.query.count()
+# 查询第1个⽤户
+user=Wdtest.query.first()
+# 查询id为3的⽤户[3种⽅式]
+user=Wdtest.query.get(3)  # 根据主键查询
+user_list=Wdtest.query.filter_by(id=3).all()  # 以关键字实参形式进行匹配字段
+user_list=Wdtest.query.filter(Wdtest.id == 3).all()  # 以恒等式形式匹配字段
+​
+# 查询名字结尾字符为g的所有⽤户
+Wdtest.query.filter(Wdtest.name.endswith('g')).all()
+​
+# 查询名字包含‘wa'的所有项目
+user_list=Wdtest.query.filter(Wdtest.name.contains('wa')).all()
+# 模糊查询
+user_list =Wdtest.query.filter(Wdtest.name.like('%a%')).all()
+# 查询名字wa开头和age为20的所有⽤户[2种⽅式]
+user_list=Wdtest.query.filter(Wdtest.name.startswith('wa'),Wdtest.age == 20).all()
+user_list=Wdtest.query.filter(and_(Wdtest.name.startswith('wa'), Wdtest.age == 20)).all()
+​
+# 非条件查询查询名字不等于wade的所有⽤户[2种⽅式]
+user_list=Wdtest.query.filter(not_(Wdtest.name == 'wade')).all()
+user_list=Wdtest.query.filter(Wdtest.name != 'wade').all()
+​
+# in 条件查询
+user_list=Wdtest.query.filter(Wdtest.id.in_(['97124f50-0208-11ea-a66c-04ea56212bdf', '3'])).all()
+​
+# 所有⽤户先按年龄从⼩到⼤, 再按id从⼤到⼩排序, 取前5个
+user_list=Wdtest.query.order_by(Wdtest.age,Wdtest.id.desc()).limit(5).all()
+​
+# 分⻚查询, 每⻚3个, 查询第2⻚的数据
+pn = Wdtest.query.paginate(2,3)
+print(pn.pages)
+print(pn.page)
+print(pn.items)
